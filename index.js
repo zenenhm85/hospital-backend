@@ -20,8 +20,16 @@ EJECUTANDO CORS
 app.use(cors());
 
 /*=============================================
+LECTURA Y PARSEO DEL BODY
+=============================================*/
+// parse application/json
+app.use(express.json());
+
+/*=============================================
 RUTAS
 =============================================*/
+app.use('/api/usuarios', require('./routes/usuarios.route'));
+app.use('/api/login', require('./routes/auth.route'));
 
 
 /*=============================================
@@ -29,8 +37,6 @@ CONEXIÓN A LA BASE DE DATOS
 =============================================*/
 
 dbConection();
-
-
 
 /*=============================================
 SALIDA PUERTO HTTP
