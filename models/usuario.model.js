@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+
 //Requerimos el módulo para validaciones únicas
 const uniqueValidator = require('mongoose-unique-validator');
 
@@ -43,7 +44,7 @@ Devolver mensaje personalizado para validaciones únicas
 UsuarioSchema.plugin(uniqueValidator, {message: 'Este {PATH} ya está registrado en la Base de datos' })
 
 /*=============================================
-Destructurando objeto usuario y devolviendo solo no necesario y con el formato deseado
+Destructurando objeto usuario y devolviendo solo lo necesario y con el formato deseado
 =============================================*/
 UsuarioSchema.method('toJSON', function() {
     const { __v, _id, password, ...object } = this.toObject();
