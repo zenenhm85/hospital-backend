@@ -75,13 +75,16 @@ const recibirImagen = async (req = request, res = response) => {
     try {
         const nombreImagen = req.params.nombre;
 
-        let pathImagen = path.join(__dirname, `../uploads/medicos/${nombreImagen}`);
+        let pathImagen = `./uploads/medicos/${nombreImagen}`;
 
-        if(fs.existsSync(pathImagen)){
-            res.sendFile(pathImagen);
-        }
-        pathImagen = path.join(__dirname, `../uploads/not-image.png`);
-        res.sendFile(pathImagen);  
+        fs.exists(pathImagen, exists=>{
+
+            if(!exists){
+                return res.sendFile(path.resolve(`./uploads/not-image.png`));                   
+            }    
+            res.sendFile(path.resolve(pathImagen));
+    
+        })
     }
     catch (error) {
         return res.status(500).json({
@@ -90,6 +93,7 @@ const recibirImagen = async (req = request, res = response) => {
             errors: error
         })
     }
+
 
 }
 
