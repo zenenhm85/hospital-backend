@@ -42,6 +42,10 @@ CONEXIÓN A LA BASE DE DATOS
 dbConection();
 
 /*=============================================
+DERECTORIO PÚBLICO
+=============================================*/
+app.use(express.static('public'));
+/*=============================================
 SALIDA PUERTO HTTP
 =============================================*/
 app.listen(process.env.PORT, ()=>{
