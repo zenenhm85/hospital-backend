@@ -5,6 +5,8 @@ const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 const {validarImagen} = require('../middlewares/validar-archivo-imagen'); 
 const { validarJWT } = require('../middlewares/validar-jwt');
+const { validarIdMedicoHospital, validarIdMedico} = require('../middlewares/validar-id');
+
 
 const medicosController = require('../controllers/medicos.controller');
 
@@ -23,13 +25,15 @@ router.post('/',
 );
 router.put('/:id',
     [
-        validarJWT,
+        validarJWT, 
+        validarIdMedicoHospital,
         check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+        check('hospital', 'El id del hospital es obligatorio').not().isEmpty(),
         validarCampos
     ],
     medicosController.actualizarMedico
 );
-router.delete('/:id', validarJWT, medicosController.eliminarMedico);
+router.delete('/:id', [validarJWT, validarIdMedico], medicosController.eliminarMedico);
 
 router.use(expressFileUpoload());//Para usar carga de archivos en la ruta
 

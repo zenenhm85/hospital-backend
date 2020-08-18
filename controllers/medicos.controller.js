@@ -51,9 +51,56 @@ const crearMedico = async (req = request, res = response) => {
 
 const actualizarMedico = async (req = request, res = response) => {
 
+    try {
+        const id = req.params.id;
+        const hospital = req.body.hospital;
+        const uid = req.uid;
+        
+        const datosMedico = {
+            ...req.body,
+            usuario: uid,
+            hospital:hospital
+        }
+
+        const medicoActualizado = await Medico.findByIdAndUpdate(id,datosMedico,{new:true});
+
+        return res.status(200).json({
+            ok: true,
+            msg: 'Médico actualizado con éxito!',
+            medico: medicoActualizado
+        })
+        
+    }
+    catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado en el servidor',
+            errors: error
+        })
+    }
+
 }
 
 const eliminarMedico = async (req = request, res = response) => {
+    try {
+        const id = req.params.id;        
+
+        const medicoEliminado = await Medico.findByIdAndDelete(id);
+
+        return res.status(200).json({
+            ok: true,
+            msg: 'Médico eliminado con éxito!',
+            medico: medicoEliminado
+        })
+        
+    }
+    catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado en el servidor',
+            errors: error
+        })
+    }
 }
 
 const subirImagenMedico = async (req = request, res = response) => {

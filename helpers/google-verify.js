@@ -15,8 +15,7 @@ const googleVerify = async( token ) => {
     });
     
 
-    const payload = ticket.getPayload();
-    const userid = payload['sub'];
+    const payload = ticket.getPayload();  
 
     const { name, email, picture } = payload;
 
