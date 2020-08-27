@@ -1,10 +1,11 @@
 const Usuario = require('../models/usuario.model');
+const { generarJWT } = require('../helpers/jwt');
 const { response, request } = require('express')
 const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
 
-const {subirImagen} = require('../helpers/actualizar-imagen');
+const { subirImagen } = require('../helpers/actualizar-imagen');
 
 const getUsuarios = async (req = request, res = response) => {
 
@@ -29,7 +30,7 @@ const getUsuarios = async (req = request, res = response) => {
     catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: 'Error inesperado en el servidor',
+            message: 'Error inesperado en el servidor',
             errors: error
         });
     }
@@ -50,15 +51,19 @@ const crearUsuario = async (req = request, res = response) => {
 
         await usuario.save();
 
+        // Generar el TOKEN - JWT
+        const token = await generarJWT(usuario.id);
+
         res.status(200).json({
             ok: true,
+            token,
             usuario
         });
     }
     catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Error inesperado en el servidor',
+            message: error.message,
             errors: error
         });
     }
@@ -78,7 +83,7 @@ const actualizarUsuario = async (req = request, res = response) => {
         if (!usuarioDB) {
             return res.status(404).json({
                 ok: false,
-                msg: 'No existe un usuario por este id'
+                message: 'No existe un usuario por este id'
             });
         }
         // Destructurando el body y dejando en campo solo los atributos a modificar
@@ -95,7 +100,7 @@ const actualizarUsuario = async (req = request, res = response) => {
     catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: 'Error inesperado en el servidor',
+            message: error.message,
             errors: error
         })
     }
@@ -113,7 +118,7 @@ const eliminarUsuario = async (req = request, res = response) => {
         if (!usuarioDB) {
             return res.status(404).json({
                 ok: false,
-                msg: 'No existe un usuario por este id'
+                message: 'No existe un usuario por este id'
             });
         }
 
@@ -121,14 +126,14 @@ const eliminarUsuario = async (req = request, res = response) => {
 
         return res.json({
             ok: true,
-            msg: "Usuario eliminado con éxito"
+            message: "Usuario eliminado con éxito"
         });
 
     }
     catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: 'Error inesperado en el servidor',
+            message: error.message,
             errors: error
         })
     }
@@ -142,7 +147,7 @@ const subirImagenUsuario = async (req = request, res = response) => {
     catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: 'Error inesperado en el servidor',
+            message: error.message,
             errors: error
         })
     }
@@ -155,19 +160,19 @@ const recibirImagen = async (req = request, res = response) => {
 
         let pathImagen = `./uploads/usuarios/${nombreImagen}`;
 
-        fs.exists(pathImagen, exists=>{
+        fs.exists(pathImagen, exists => {
 
-            if(!exists){
-                return res.sendFile(path.resolve(`./uploads/not-image.png`));                   
-            }    
+            if (!exists) {
+                return res.sendFile(path.resolve(`./uploads/not-image.png`));
+            }
             res.sendFile(path.resolve(pathImagen));
-    
+
         })
     }
     catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: 'Error inesperado en el servidor',
+            msg: error.message,
             errors: error
         })
     }

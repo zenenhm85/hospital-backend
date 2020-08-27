@@ -15,7 +15,7 @@ const loginUsuario = async (req = request, res = response) => {
         if (!usuarioBD) {
             return res.status(404).json({
                 ok: false,
-                msg: "Usuário o contraseña incorrectos"
+                message: "Usuário o contraseña incorrectos"
             });
         }
 
@@ -24,7 +24,7 @@ const loginUsuario = async (req = request, res = response) => {
         if (!verificarPasword) {
             return res.status(404).json({
                 ok: false,
-                msg: "Usuário o contraseña incorrectos"
+                message: "Usuário o contraseña incorrectos"
             });
         }
         //Generar token
@@ -32,7 +32,7 @@ const loginUsuario = async (req = request, res = response) => {
 
         return res.status(200).json({
             ok: true,
-            msg: "Login realizado con éxito",
+            message: "Login realizado con éxito",
             token
         });
 
@@ -40,7 +40,7 @@ const loginUsuario = async (req = request, res = response) => {
     catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: "Error en el servidor, contacte con su administrador"
+            message: error.message
         });
     }
 }

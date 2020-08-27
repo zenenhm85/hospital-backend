@@ -4,7 +4,7 @@ const validarImagen = (req, res, next ) => {
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json({
             ok: false,
-            msg: 'No hay ningún archivo'
+            message: 'No hay ningún archivo'
         });
     }
 
@@ -19,7 +19,7 @@ const validarImagen = (req, res, next ) => {
     if (!extensionesValidas.includes(extensionArchivo)) {
         return res.status(400).json({
             ok: false,
-            msg: 'No es una extensión permitida'
+            message: 'No es una extensión permitida'
         });
     }
 

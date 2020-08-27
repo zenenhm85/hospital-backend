@@ -14,7 +14,6 @@ router.get('/',validarJWT, usuariosController.getUsuarios);
 router.get('/imagen/:nombre',usuariosController.recibirImagen);
 router.post('/',
     [
-        validarJWT,
         check('nombre', 'El nombre es obligatorio').not().isEmpty(),
         check('password','La contraseña es obligatoria').not().isEmpty(),
         check('password','La contraseña debe tener más de 5 carateres').isLength({min:6}),        
